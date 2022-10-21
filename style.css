@@ -1,3 +1,32 @@
 * {
     background-color: antiquewhite;
 }
+
+.content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.grid-container {
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    height: 600px;
+    width: 600px;
+    border: 2px solid red;
+
+}
+
+.grid-container-cell {
+
+    border: 1px solid rgb(195, 255, 0);
+
+}
+
+.modal {
+    display: block;
+    height: 400px;
+    width: 300px;
+    border: 2px solid red;
+}
