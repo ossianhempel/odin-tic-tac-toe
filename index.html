@@ -8,21 +8,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Use board class of x or o to determine whose turn it is -->
     <div class="content-container">
-        <div class="grid-container">
-            <div class="grid-container-cell"></div>
-            <div class="grid-container-cell"></div>
-            <div class="grid-container-cell"></div>
-            <div class="grid-container-cell"></div>
-            <div class="grid-container-cell"></div>
-            <div class="grid-container-cell"></div>
-            <div class="grid-container-cell"></div>
-            <div class="grid-container-cell"></div>
-            <div class="grid-container-cell"></div>
+        <div class="board x" id="board">
+                <div class="board-cell x" data-cell></div>
+                <div class="board-cell o" data-cell></div>
+                <div class="board-cell" data-cell></div>
+                <div class="board-cell" data-cell></div>
+                <div class="board-cell" data-cell></div>
+                <div class="board-cell" data-cell></div>
+                <div class="board-cell" data-cell></div>
+                <div class="board-cell" data-cell></div>
+                <div class="board-cell" data-cell></div>
         </div>
     </div>
-    <div class="modal">
-
+    <div class="modal" id="modal">
+        <div data-winning-message-text></div>
+        <button id="restartButton">Restart</button>
     </div>
 </body>
 <script src="app.js"></script>

@@ -1,5 +1,16 @@
 * {
-    background-color: antiquewhite;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+:root {
+    --cell-size: 100px;
+    --mark-size: calc(var(--cell-size) * 0.9);
+
+}
+
+body { 
+    margin: 0;
 }
 
 .content-container {
@@ -8,24 +19,52 @@
     align-items: center;
 }
 
+.grid-gutters {
+    background-color: black;
+}
 
-.grid-container {
+.board {
     display: grid;
-    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-    height: 600px;
-    width: 600px;
+    grid-template: repeat(3, auto) / repeat(3, auto);
+    height: auto;
+    width: auto;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
     border: 2px solid red;
+    gap: 5px;
+    background-color: black;
 
 }
 
-.grid-container-cell {
+.board-cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 
-    border: 1px solid rgb(195, 255, 0);
+    /* border: 2px solid rgb(0, 0, 0); */
+}
 
+.board-cell.x,
+.board-cell.o {
+    cursor: not-allowed;
+}
+
+.board-cell.x:hover,
+.board-cell.o:hover {
+    background-color: lightgray;
 }
 
 .modal {
     display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     height: 400px;
     width: 300px;
     border: 2px solid red;
