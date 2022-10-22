@@ -14,13 +14,11 @@ body {
 }
 
 .content-container {
+    height: 100vh;
+    width: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.grid-gutters {
-    background-color: black;
 }
 
 .board {
@@ -59,13 +57,18 @@ body {
 }
 
 .modal {
-    display: block;
+    display: inline;
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    z-index: 1;
+    top: 50vh;
+    left: 50vh;
     height: 400px;
     width: 300px;
+    opacity: 90%;
+    background-color: black;
     border: 2px solid red;
+}
+
+.winning-message {
+    display: inline;
 }
