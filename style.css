@@ -4,7 +4,7 @@
 }
 
 :root {
-    --cell-size: 100px;
+    --cell-size: 10vh;
     --mark-size: calc(var(--cell-size) * 0.9);
 
 }
@@ -15,7 +15,7 @@ body {
 
 .content-container {
     height: 100vh;
-    width: 100vh;
+    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,8 +29,8 @@ body {
     justify-content: center;
     align-content: center;
     align-items: center;
-    border: 2px solid red;
-    gap: 5px;
+    /* border: 2px solid red; */
+    gap: 4px;
     background-color: black;
 
 }
@@ -57,7 +57,7 @@ body {
 }
 
 .modal {
-    display: inline;
+    display: block;
     position: fixed;
     z-index: 1;
     top: 50vh;
