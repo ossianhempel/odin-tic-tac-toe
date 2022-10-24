@@ -13,18 +13,36 @@
     <!-- Use board class of x or o to determine whose turn it is -->
     <div class="content-container">
         <div class="board" id="board">
-                <div class="board-cell" data-cell></div>
-                <div class="board-cell" data-cell></div>
-                <div class="board-cell" data-cell></div>
-                <div class="board-cell" data-cell></div>
-                <div class="board-cell" data-cell></div>
-                <div class="board-cell" data-cell></div>
-                <div class="board-cell" data-cell></div>
-                <div class="board-cell" data-cell></div>
-                <div class="board-cell" data-cell></div>
+                <div class="board-cell" id="0" data-cell></div>
+                <div class="board-cell" id="1" data-cell></div>
+                <div class="board-cell" id="2" data-cell></div>
+                <div class="board-cell" id="3" data-cell></div>
+                <div class="board-cell" id="4" data-cell></div>
+                <div class="board-cell" id="5" data-cell></div>
+                <div class="board-cell" id="6" data-cell></div>
+                <div class="board-cell" id="7" data-cell></div>
+                <div class="board-cell" id="8" data-cell></div>
         </div>
     </div>
     <div class="modal" id="modal">
+        <form class="my-form" id="myForm" method="get"> 
+            <label for="name">Player 1's name:</label>
+            <input type="text" id="p1-name">
+            <label for="name">Player 2's name:</label>
+            <input type="text" id="p2-name">
+            
+            <p>Select your AI difficulty:</p>
+            <input type="radio" id="easyDifficulty" name="difficulty" value="easy">
+            <label for="easy">Easy</label> <br>
+            <input type="radio" id="hardDifficulty" name="difficulty" value="hard">
+            <label for="hard">Hard</label> <br>
+
+            <button type="submit" class="form-submit-btn" id="formSubmitBtn">Play</button>
+
+        </form>
+        
+        
+        
         <div class="winning-message" data-winning-message></div>
         <button id="restartButton">Restart</button>
     </div>

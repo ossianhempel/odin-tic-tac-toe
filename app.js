@@ -1,11 +1,29 @@
 
 
-let gameBoardArray = [
-    [1, 2],
-    [3, 4],
-    [5, 6],
-    []
-]
+const InitializeGame = (data) => {
+    
+    // game variables
+     
+
+    // board
+    let boardArray = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+
+}
+
+// Factory function creating person
+const Player = (name) => {
+    // creating player objects
+    const player = {};
+
+    // parameters as keys to this object
+    player.name = name;
+
+}
+
+
+
+
+
 
 // TODO eventListener to the modal
 const modal = document.querySelector('#modal');
@@ -44,13 +62,12 @@ function handleClick(e) {
 };
 
 function addMark(e) {
-
     if (circleTurn === true) {
-        e.target.textContent = 'O';
-        e.target.setAttribute('class', 'board-cell o')
+        e.target.textContent = 'O'
+        e.target.classList.add('o')
     } else {
         e.target.textContent = 'X';
-        e.target.setAttribute('class', 'board-cell x')
+        e.target.classList.add('x')
     }
 }
 
