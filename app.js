@@ -1,38 +1,46 @@
-
-
-const InitializeGame = (data) => {
-    
-    // game variables
-     
-
-    // board
-    let boardArray = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-
-}
-
-// Factory function creating person
-const Player = (name) => {
-    // creating player objects
-    const player = {};
-
-    // parameters as keys to this object
-    player.name = name;
-
-}
-
-
-
-
-
-
-// TODO eventListener to the modal
+const form = document.querySelector('#myForm');
 const modal = document.querySelector('#modal');
 const restartButton = document.querySelector('#restartButton');
 const board = document.querySelector('#board');
 
-restartButton.addEventListener('click', () => {
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
     showModal();
+    InitializeGame(data);
 });
+
+
+const initializaVariables = (data) => {
+    data.board = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    data.p1 = 'X'
+    data.p2 = 'O'
+    data.round = 0;
+    data.currentPlayer = 'X';
+    data.gameOver = false;
+}
+
+
+const InitializeGame = (data) => {
+    
+    const gridCells = document.querySelectorAll('[data-cell]');
+    gridCells.forEach(cell => {
+        cell.addEventListener('click', handleClick, {once: true})
+            // instead of setting text-content to X we should
+            // fill the array with X and then render the board
+            // to reflext the array
+            // cell.setAttribute('class', 'x') 
+    });
+
+    initializaVariables(data);
+    
+
+    
+};
+
+
+
 
 
 function showModal() {
@@ -85,15 +93,7 @@ function switchPlayer() {
 }
 
 
-const gridCells = document.querySelectorAll('[data-cell]');
-gridCells.forEach(cell => {
-    cell.addEventListener('click', handleClick, {once: true})
-        // instead of setting text-content to X we should
-        // fill the array with X and then render the board
-        // to reflext the array
-        // cell.setAttribute('class', 'x')
-        
-});
+
 
 
 
@@ -103,7 +103,4 @@ gridCells.forEach(cell => {
 
 
 // TODO Add AI using MinMax-algorithm
-
-
-
 
