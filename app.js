@@ -11,7 +11,7 @@ form.addEventListener('submit', (e) => {
     InitializeGame(data);
 });
 
-
+// initialize the object variables
 const initializaVariables = (data) => {
     data.board = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     data.p1 = 'X'
@@ -21,20 +21,22 @@ const initializaVariables = (data) => {
     data.gameOver = false;
 }
 
-
-const InitializeGame = (data) => {
-    
+const addEventListenersToBoard = (data) => {
     const gridCells = document.querySelectorAll('[data-cell]');
     gridCells.forEach(cell => {
-        cell.addEventListener('click', handleClick, {once: true})
-            // instead of setting text-content to X we should
-            // fill the array with X and then render the board
-            // to reflext the array
-            // cell.setAttribute('class', 'x') 
+        cell.addEventListener('click', (event) => {
+            handleClick(event.target, data);
+        })
     });
 
+}
+
+// initialize the game
+const InitializeGame = (data) => {
+
     initializaVariables(data);
-    
+
+    addEventListenersToBoard(data);
 
     
 };
@@ -42,7 +44,7 @@ const InitializeGame = (data) => {
 
 
 
-
+// show/hide modal
 function showModal() {
     if (modal.style.display === 'none') {
         modal.style.display = 'block';
@@ -51,24 +53,34 @@ function showModal() {
     }
 };
 
+// TODO functionality to reset the board 
+
 
 let circleTurn = true;
 
 // TODO set win conditions
 
-
-function handleClick(e) {
+// What happens when player clicks on the board
+function handleClick(e, data) {
     
+    console.log(e, data);
+    console.log(e.id);
+
     // TODO add x/o to board either directly or through an array that renders the board + add x/o to the cell's class
-    addMark(e, circleTurn);
+    // addMark(e, data);
     
     // TODO switch player (change class on board)
-    switchPlayer(circleTurn);
+    // switchPlayer(e, data);
 
     // TODO check if someone's won
         // * If so - trigger Modal with appropriate winning message
+    
+    // TODO iterate data.round
+    nextRound(data);
+    
 };
 
+// Place user's mark on the board
 function addMark(e) {
     if (circleTurn === true) {
         e.target.textContent = 'O'
@@ -79,6 +91,7 @@ function addMark(e) {
     }
 }
 
+// Swith player between x/o
 function switchPlayer() {
     if (circleTurn === true) {
         circleTurn = false;
@@ -89,17 +102,14 @@ function switchPlayer() {
         board.setAttribute('class', 'board o');
 
     }
-    // return circleTurn;
+}
+
+function nextRound(data) {
+    data.round++;
 }
 
 
 
-
-
-
-// TODO Modal 
-    // * Add eventlistener to button
-    // * functionality to reset the board 
 
 
 // TODO Add AI using MinMax-algorithm
