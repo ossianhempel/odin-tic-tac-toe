@@ -1,7 +1,10 @@
 const form = document.querySelector('#myForm');
 const modal = document.querySelector('#modal');
 const restartButton = document.querySelector('#restartButton');
+const backToMenuButton = document.querySelector('#backToMenuButton');
+
 const board = document.querySelector('#board');
+
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -10,6 +13,14 @@ form.addEventListener('submit', (e) => {
     showModal();
     InitializeGame(data);
 });
+
+restartButton.addEventListener('click', () => {
+
+})
+
+backToMenuButton.addEventListener('click' () => {
+
+})
 
 // initialize the object variables
 const initializaVariables = (data) => {
@@ -67,12 +78,11 @@ function handleClick(e, data) {
 
     addMark(e, data);
     
-    // TODO switch player (change class on board)
     switchPlayer(e, data);
 
     // TODO check if someone's won or draw
         // * If so - trigger Modal with appropriate winning message
-
+    checkIfWin(e, data);
     
     
     nextRound(data);
@@ -96,6 +106,18 @@ function addMark(e, data) {
     }
 }
 
+// Check if someone's won or if draw
+function checkIfWin(e, data) {
+    if (data.round === 8) {
+        data.gameOver = true;
+    }
+    console.log(data.gameOver);
+}
+
+function gameOver(e, data) {
+
+}
+
 // Swith player between x/o
 function switchPlayer(e, data) {
     
@@ -109,6 +131,11 @@ function switchPlayer(e, data) {
         data.currentPlayer = 'X';
         board.classList.add('X');
     }
+}
+
+// Reset the board and start from the beginning with the same players
+function resetBoard(data) {
+    
 }
 
 // Iterate data.round
