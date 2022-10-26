@@ -74,6 +74,8 @@ function handleClick(e, data) {
 
     // TODO check if someone's won
         // * If so - trigger Modal with appropriate winning message
+
+    // Check Winning conditions
     
     // TODO iterate data.round
     nextRound(data);
