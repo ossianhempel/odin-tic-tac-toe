@@ -14,13 +14,7 @@ form.addEventListener('submit', (e) => {
     InitializeGame(data);
 });
 
-restartButton.addEventListener('click', () => {
 
-})
-
-backToMenuButton.addEventListener('click' () => {
-
-})
 
 // initialize the object variables
 const initializaVariables = (data) => {
@@ -39,8 +33,22 @@ const addEventListenersToBoard = (data) => {
             handleClick(event.target, data);
         })
     });
-
 }
+
+// TODO add eventlisteners to the buttons
+function addEventListenerstoButtons(data) {
+    const dataObject = data;
+    restartButton.addEventListener('click', () => {
+        resetBoard(dataObject);
+    })
+    
+    // TODO fix this one!!! similar to the one above 
+    backToMenuButton.addEventListener('click', () => {
+        console.log('works!')
+    
+    });
+}
+
 
 // initialize the game
 const InitializeGame = (data) => {
@@ -49,6 +57,7 @@ const InitializeGame = (data) => {
 
     addEventListenersToBoard(data);
 
+    addEventListenerstoButtons(data);
     
 };
 
@@ -64,21 +73,14 @@ function showModal() {
     }
 };
 
-// TODO functionality to reset the board 
-
-
-let circleTurn = true;
 
 // TODO set win conditions
 
 // What happens when player clicks on the board
 function handleClick(e, data) {
     
-    console.log(e, data);
-
     addMark(e, data);
     
-    switchPlayer(e, data);
 
     // TODO check if someone's won or draw
         // * If so - trigger Modal with appropriate winning message
@@ -86,6 +88,10 @@ function handleClick(e, data) {
     
     
     nextRound(data);
+
+    switchPlayer(e, data);
+    console.log(data);
+
     
 };
 
@@ -120,22 +126,33 @@ function gameOver(e, data) {
 
 // Swith player between x/o
 function switchPlayer(e, data) {
+    if (data.round > 0) {
+        let currentPlayer = data.currentPlayer;
     
-    let currentPlayer = data.currentPlayer;
-    
-    if (currentPlayer === 'X') {
-        data.currentPlayer = 'O';
-        board.classList.add('O');
+        if (currentPlayer === 'X') {
+            data.currentPlayer = 'O';
+            // TODO change so that it sets it to 'board O' instead so it's restartable?
+            board.classList.add('O');
 
-    } else {
-        data.currentPlayer = 'X';
-        board.classList.add('X');
+        } else {
+            data.currentPlayer = 'X';
+            // TODO change so that it sets it to 'board X' instead so it's restartable?
+            board.classList.add('X');
+        }
     }
+    
 }
 
-// Reset the board and start from the beginning with the same players
+//* Reset the board and start from the beginning with the same players
+// THE PROBLEM HERE IS THAT IT CREATES A NEW OBJECT INSTEAD OF USING THE SAME AS THE OTHER!
+// WHY? BECAUSE THIS EVENT LISTENER ISN'T CALLED 
+// IN AN ENVIRONMENT WHERE THE ORIGINAL OBJECT IS ALREADY INITIALIZED! 
 function resetBoard(data) {
-    
+    initializaVariables(data);
+ 
+    const cells = document.querySelectorAll('[data-cell]');
+    cells.forEach(cell => cell.textContent = '');
+    console.log(data);
 }
 
 // Iterate data.round
