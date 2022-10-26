@@ -68,12 +68,11 @@ function handleClick(e, data) {
     addMark(e, data);
     
     // TODO switch player (change class on board)
-    // switchPlayer(e, data);
+    switchPlayer(e, data);
 
-    // TODO check if someone's won
+    // TODO check if someone's won or draw
         // * If so - trigger Modal with appropriate winning message
 
-    // Check Winning conditions
     
     
     nextRound(data);
@@ -89,28 +88,30 @@ function addMark(e, data) {
     if (data.currentPlayer === 'X') {
         e.textContent = 'X'
         e.classList.add('X')
-        data.board[index] = 'X';
+        board[index] = 'X';
     } else {
         e.textContent = 'O';
         e.classList.add('O')
-        data.board[index] = 'O';
+        board[index] = 'O';
     }
 }
 
 // Swith player between x/o
-function switchPlayer() {
-    if (circleTurn === true) {
-        circleTurn = false;
-        board.setAttribute('class', 'board x');
+function switchPlayer(e, data) {
+    
+    let currentPlayer = data.currentPlayer;
+    
+    if (currentPlayer === 'X') {
+        data.currentPlayer = 'O';
+        board.classList.add('O');
 
     } else {
-        circleTurn = true;
-        board.setAttribute('class', 'board o');
-
+        data.currentPlayer = 'X';
+        board.classList.add('X');
     }
 }
 
-// TODO iterate data.round
+// Iterate data.round
 function nextRound(data) {
     data.round++;
 }
