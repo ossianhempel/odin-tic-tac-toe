@@ -64,10 +64,8 @@ let circleTurn = true;
 function handleClick(e, data) {
     
     console.log(e, data);
-    console.log(e.id);
 
-    // TODO add x/o to board either directly or through an array that renders the board + add x/o to the cell's class
-    // addMark(e, data);
+    addMark(e, data);
     
     // TODO switch player (change class on board)
     // switchPlayer(e, data);
@@ -77,19 +75,25 @@ function handleClick(e, data) {
 
     // Check Winning conditions
     
-    // TODO iterate data.round
+    
     nextRound(data);
     
 };
 
-// Place user's mark on the board
-function addMark(e) {
-    if (circleTurn === true) {
-        e.target.textContent = 'O'
-        e.target.classList.add('o')
+// Place user's mark on the board and replace the cell's index in the board array with x/o
+function addMark(e, data) {
+    
+    const board = data.board;
+    const index = e.id;  
+
+    if (data.currentPlayer === 'X') {
+        e.textContent = 'X'
+        e.classList.add('X')
+        data.board[index] = 'X';
     } else {
-        e.target.textContent = 'X';
-        e.target.classList.add('x')
+        e.textContent = 'O';
+        e.classList.add('O')
+        data.board[index] = 'O';
     }
 }
 
@@ -106,6 +110,7 @@ function switchPlayer() {
     }
 }
 
+// TODO iterate data.round
 function nextRound(data) {
     data.round++;
 }
