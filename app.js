@@ -28,12 +28,21 @@ const initializaVariables = (data) => {
     data.gameOver = false;
 }
 
+// function addEventListenersToBoard (data) {
+//     const gridCells = document.querySelectorAll('[data-cell]');
+//     gridCells.forEach(cell => {
+//         cell.addEventListener('click', (event) => {
+//             handleClick(event.target, data);
+//         }, {once: true});
+//     });
+// }
+
 const addEventListenersToBoard = (data) => {
     const gridCells = document.querySelectorAll('[data-cell]');
     gridCells.forEach(cell => {
         cell.addEventListener('click', (event) => {
             handleClick(event.target, data);
-        })
+        });
     });
 }
 
@@ -47,13 +56,14 @@ function addEventListenerstoButtons(data) {
 
     // TODO fix this one!!! similar to the one above 
     backToMenuButton.addEventListener('click', () => {
-        console.log('works!')
+        resetBoard(dataObject);
+        showModal('restartModal');
+        showModal('modal');
     
     });
 }
 
 
-// initialize the game
 const InitializeGame = (data) => {
 
     initializaVariables(data);
@@ -64,6 +74,13 @@ const InitializeGame = (data) => {
     
 };
 
+// function initializeGame(data) {
+//     initializaVariables(data);
+
+//     addEventListenersToBoard(data);
+
+//     addEventListenerstoButtons(data);
+// }
 
 
 
@@ -90,18 +107,24 @@ function showModal(whichModal) {
 // What happens when player clicks on the board
 function handleClick(e, data) {
     
-    addMark(e, data);
+    if (data.gameOver && data.round > 8) {
+        return
+    }
+    
+    if (data.board[e.id] !== 'X' && data.board[e.id] !== 'O'){
+        addMark(e, data);
+        checkIfWin(e, data);
+        nextRound(data);
+        switchPlayer(e, data);
+        console.log(data);
+
+    }
+    
     
 
     // TODO check if someone's won or draw
         // * If so - trigger Modal with appropriate winning message
-    checkIfWin(e, data);
     
-    
-    nextRound(data);
-
-    switchPlayer(e, data);
-    console.log(data);
 
     
 };
@@ -112,25 +135,32 @@ function addMark(e, data) {
     const board = data.board;
     const index = e.id;  
 
-    if (data.currentPlayer === 'X') {
-        e.textContent = 'X'
-        e.classList.add('X')
-        board[index] = 'X';
-    } else {
-        e.textContent = 'O';
-        e.classList.add('O')
-        board[index] = 'O';
-    }
+    e.textContent = data.currentPlayer;
+    // e.classList.add(data.currentPlayer);
+    e.setAttribute('class', `board-cell ${data.currentPlayer}`);
+    board[index] = data.currentPlayer;
+    
+    // if (data.currentPlayer === 'X') {
+        
+        
+    //     e.textContent = 'X'
+    //     e.classList.add('X')
+    //     board[index] = 'X';
+    // } else {
+    //     e.textContent = 'O';
+    //     e.classList.add('O')
+    //     board[index] = 'O';
+    // }
 }
 
 // Check if someone's won or if draw
 function checkIfWin(e, data) {
-    if (data.round === 8) {
+    if (data.round >= 8) {
         data.gameOver = true;
         gameOver(e, data, 'draw');
-    } else if () {
+    // } else if (pass) {
 
-    } else if () {
+    // } else if () {
 
     }
 }
@@ -153,16 +183,17 @@ function gameOver(e, data, winner) {
 function switchPlayer(e, data) {
     if (data.round > 0) {
         let currentPlayer = data.currentPlayer;
-    
+        
+        // currentPlayer === 'X' ? data.currentPlayer = 'O' : data.currentPlayer = 'X';
+
+
         if (currentPlayer === 'X') {
             data.currentPlayer = 'O';
-            // TODO change so that it sets it to 'board O' instead so it's restartable?
-            board.classList.add('O');
+            board.setAttribute('class', 'board O')
 
         } else {
             data.currentPlayer = 'X';
-            // TODO change so that it sets it to 'board X' instead so it's restartable?
-            board.classList.add('X');
+            board.setAttribute('class', 'board X');
         }
     }
     
@@ -171,6 +202,7 @@ function switchPlayer(e, data) {
 // Reset the board and start from the beginning with the same players
 function resetBoard(data) {
     initializaVariables(data);
+    // InitializeGame(data);
  
     const cells = document.querySelectorAll('[data-cell]');
     cells.forEach(cell => cell.textContent = '');
