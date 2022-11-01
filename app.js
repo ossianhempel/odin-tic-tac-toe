@@ -8,8 +8,25 @@ const backToMenuButton = document.querySelector('#backToMenuButton');
 const board = document.querySelector('#board');
 
 
+const winningConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+
+    [0, 4, 8],
+    [2, 4, 6]
+]
+
+
 form.addEventListener('submit', (e) => {
+    // prevent page refresh
     e.preventDefault();
+    
+    // initialize user form data
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
     showModal('modal');
@@ -28,14 +45,7 @@ const initializaVariables = (data) => {
     data.gameOver = false;
 }
 
-// function addEventListenersToBoard (data) {
-//     const gridCells = document.querySelectorAll('[data-cell]');
-//     gridCells.forEach(cell => {
-//         cell.addEventListener('click', (event) => {
-//             handleClick(event.target, data);
-//         }, {once: true});
-//     });
-// }
+
 
 const addEventListenersToBoard = (data) => {
     const gridCells = document.querySelectorAll('[data-cell]');
@@ -47,7 +57,7 @@ const addEventListenersToBoard = (data) => {
 }
 
 // TODO add eventlisteners to the buttons
-function addEventListenerstoButtons(data) {
+const addEventListenerstoButtons = (data) => {
     const dataObject = data;
     restartButton.addEventListener('click', () => {
         resetBoard(dataObject);
@@ -62,6 +72,22 @@ function addEventListenerstoButtons(data) {
     
     });
 }
+
+// function addEventListenerstoButtons(data) {
+//     const dataObject = data;
+//     restartButton.addEventListener('click', () => {
+//         resetBoard(dataObject);
+//         showModal('restartModal');
+//     })
+
+//     // TODO fix this one!!! similar to the one above 
+//     backToMenuButton.addEventListener('click', () => {
+//         resetBoard(dataObject);
+//         showModal('restartModal');
+//         showModal('modal');
+    
+//     });
+// }
 
 
 const InitializeGame = (data) => {
@@ -153,6 +179,17 @@ function addMark(e, data) {
     // }
 }
 
+const endConditions = (data) => {
+    if (checkWinner(data)) {
+        // TODO adjust the dom to reflect win
+        return true; 
+    } else if (data.round === 9) {
+        // TODO adjust the dom to reflect tie 
+        return true;
+    }
+}
+
+
 // Check if someone's won or if draw
 function checkIfWin(e, data) {
     if (data.round >= 8) {
@@ -163,6 +200,17 @@ function checkIfWin(e, data) {
     // } else if () {
 
     }
+}
+
+const checkWinner = (data) => {
+    let result = false;
+    winningConditions.forEach(condition => {
+        if(data.board[condition[0]] === data.board[condition[1]] && data.board[condition[1]] === data.board(condition[2])) {
+            console.log('player has won')
+            result = true;
+        }
+    })
+    return result;
 }
 
 // TODO IN-PROGRESS
