@@ -46,7 +46,7 @@ const initializaVariables = (data) => {
 }
 
 
-
+// TODO turn into module?
 const addEventListenersToBoard = (data) => {
     const gridCells = document.querySelectorAll('[data-cell]');
     gridCells.forEach(cell => {
@@ -57,14 +57,17 @@ const addEventListenersToBoard = (data) => {
 }
 
 // TODO add eventlisteners to the buttons
-const addEventListenerstoButtons = (data) => {
+    // * turn into module?
+const addEventListenersToButtons = (data) => {
     const dataObject = data;
+    
     restartButton.addEventListener('click', () => {
         resetBoard(dataObject);
         showModal('restartModal');
     })
 
     // TODO fix this one!!! similar to the one above 
+        // * Rework?
     backToMenuButton.addEventListener('click', () => {
         resetBoard(dataObject);
         showModal('restartModal');
@@ -73,22 +76,6 @@ const addEventListenerstoButtons = (data) => {
     });
 }
 
-// function addEventListenerstoButtons(data) {
-//     const dataObject = data;
-//     restartButton.addEventListener('click', () => {
-//         resetBoard(dataObject);
-//         showModal('restartModal');
-//     })
-
-//     // TODO fix this one!!! similar to the one above 
-//     backToMenuButton.addEventListener('click', () => {
-//         resetBoard(dataObject);
-//         showModal('restartModal');
-//         showModal('modal');
-    
-//     });
-// }
-
 
 const InitializeGame = (data) => {
 
@@ -96,21 +83,13 @@ const InitializeGame = (data) => {
 
     addEventListenersToBoard(data);
 
-    addEventListenerstoButtons(data);
+    addEventListenersToButtons(data);
     
 };
 
-// function initializeGame(data) {
-//     initializaVariables(data);
-
-//     addEventListenersToBoard(data);
-
-//     addEventListenerstoButtons(data);
-// }
 
 
-
-// show/hide modal based on which modal is passed as an argument
+// TODO REWORK show/hide modal based on which modal is passed as an argument 
 function showModal(whichModal) {
     if (whichModal === 'modal') {
         if (modal.style.display === 'none') {
@@ -127,58 +106,36 @@ function showModal(whichModal) {
     }
 };
 
+// const showModal = (data) => {
 
-// TODO set win conditions
+// }
 
-// What happens when player clicks on the board
-function handleClick(e, data) {
-    
+
+// // What happens when player clicks on the board
+const handleClick = (e, data) => {
     if (data.gameOver && data.round > 8) {
         return
     }
     
     if (data.board[e.id] !== 'X' && data.board[e.id] !== 'O'){
         addMark(e, data);
-        checkIfWin(e, data);
+        // checkIfWin(e, data);
+        checkWinner(data);
         nextRound(data);
-        switchPlayer(e, data);
+        switchPlayer(data);
         console.log(data);
 
     }
-    
-    
-
-    // TODO check if someone's won or draw
-        // * If so - trigger Modal with appropriate winning message
-    
-
-    
 };
 
 // Place user's mark on the board and replace the cell's index in the board array with x/o
-function addMark(e, data) {
-    
-    const board = data.board;
-    const index = e.id;  
-
+const addMark = (e, data) => {
     e.textContent = data.currentPlayer;
-    // e.classList.add(data.currentPlayer);
     e.setAttribute('class', `board-cell ${data.currentPlayer}`);
-    board[index] = data.currentPlayer;
-    
-    // if (data.currentPlayer === 'X') {
-        
-        
-    //     e.textContent = 'X'
-    //     e.classList.add('X')
-    //     board[index] = 'X';
-    // } else {
-    //     e.textContent = 'O';
-    //     e.classList.add('O')
-    //     board[index] = 'O';
-    // }
+    data.board[e.id] = data.currentPlayer;
 }
 
+// TODO This is the new gameOver
 const endConditions = (data) => {
     if (checkWinner(data)) {
         // TODO adjust the dom to reflect win
@@ -195,17 +152,16 @@ function checkIfWin(e, data) {
     if (data.round >= 8) {
         data.gameOver = true;
         gameOver(e, data, 'draw');
-    // } else if (pass) {
-
-    // } else if () {
 
     }
 }
 
+// Check if someone's won or if draw
 const checkWinner = (data) => {
     let result = false;
+    // iterate through winning conditions to check if any of those are filled with the same mark
     winningConditions.forEach(condition => {
-        if(data.board[condition[0]] === data.board[condition[1]] && data.board[condition[1]] === data.board(condition[2])) {
+        if(data.board[condition[0]] === data.board[condition[1]] && data.board[condition[1]] === data.board[condition[2]]) {
             console.log('player has won')
             result = true;
         }
@@ -213,7 +169,10 @@ const checkWinner = (data) => {
     return result;
 }
 
-// TODO IN-PROGRESS
+// TODO IN-PROGRESS/REWORK
+    // * USE 'result' variable from checkWinner
+    // * arrow function
+    // * REPLACE with endConditions and rename to gameOver?
 function gameOver(e, data, winner) {
     if (winner === 'p1') {
         document.querySelector('[data-winning-message]').textContent = `${data.p1} WINS!`;
@@ -228,14 +187,11 @@ function gameOver(e, data, winner) {
 }
 
 // Swith player between x/o
-function switchPlayer(e, data) {
+const switchPlayer = (data) => {
     if (data.round > 0) {
-        let currentPlayer = data.currentPlayer;
+        // let currentPlayer = data.currentPlayer;
         
-        // currentPlayer === 'X' ? data.currentPlayer = 'O' : data.currentPlayer = 'X';
-
-
-        if (currentPlayer === 'X') {
+        if (data.currentPlayer === 'X') {
             data.currentPlayer = 'O';
             board.setAttribute('class', 'board O')
 
@@ -244,14 +200,23 @@ function switchPlayer(e, data) {
             board.setAttribute('class', 'board X');
         }
     }
-    
 }
 
 // Reset the board and start from the beginning with the same players
-function resetBoard(data) {
-    initializaVariables(data);
-    // InitializeGame(data);
+// function resetBoard(data) {
+//     initializaVariables(data);
  
+//     const cells = document.querySelectorAll('[data-cell]');
+//     cells.forEach(cell => cell.textContent = '');
+
+//     document.querySelector('[data-winning-message]').textContent = '';
+
+// }
+
+// Reset the board and start from the beginning with the same players
+const resetBoard = (data) => {
+    initializaVariables(data);
+
     const cells = document.querySelectorAll('[data-cell]');
     cells.forEach(cell => cell.textContent = '');
 
@@ -260,11 +225,17 @@ function resetBoard(data) {
 }
 
 // Iterate data.round
-function nextRound(data) {
+const nextRound = (data) => {
     data.round++;
 }
 
 
 
+
+
+
 // TODO Add AI using MinMax-algorithm
 
+
+
+// TODO change so that Xs and Os are nice looking - like webdevesimplified did it
