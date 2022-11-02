@@ -113,18 +113,25 @@ function showModal(whichModal) {
 
 // // What happens when player clicks on the board
 const handleClick = (e, data) => {
-    if (data.gameOver && data.round > 8) {
-        return
+    
+    // If it's game over, do nothing
+    if (data.gameOver || data.round > 8) {
+        return;
     }
     
-    if (data.board[e.id] !== 'X' && data.board[e.id] !== 'O'){
-        addMark(e, data);
-        // checkIfWin(e, data);
-        checkWinner(data);
-        nextRound(data);
-        switchPlayer(data);
-        console.log(data);
+    // check if cell has a letter in it, if so, do nothing
+    if (data.board[e.id] == 'X' || data.board[e.id] == 'O'){
+        return;
+    }
+    
 
+    addMark(e, data);
+    nextRound(data);
+    switchPlayer(data);
+    console.log(data);
+
+    if (endConditions(data)) {
+        // 
     }
 };
 
@@ -135,61 +142,54 @@ const addMark = (e, data) => {
     data.board[e.id] = data.currentPlayer;
 }
 
-// TODO This is the new gameOver
+
 const endConditions = (data) => {
+    
+
     if (checkWinner(data)) {
+        
         // TODO adjust the dom to reflect win
+        document.querySelector('[data-winning-message]').textContent = `${data.p1} WINS!`;
+        // showModal('restartModal');
+        
         return true; 
+
     } else if (data.round === 9) {
         // TODO adjust the dom to reflect tie 
+        document.querySelector('[data-winning-message]').textContent = 'DRAW!';
+        // showModal('restartModal');
+
         return true;
     }
+    return false;
 }
 
-
-// Check if someone's won or if draw
-function checkIfWin(e, data) {
-    if (data.round >= 8) {
-        data.gameOver = true;
-        gameOver(e, data, 'draw');
-
-    }
-}
-
-// Check if someone's won or if draw
+// Check if someone's won or if draw - returns true or false through variable 'result'
 const checkWinner = (data) => {
     let result = false;
-    // iterate through winning conditions to check if any of those are filled with the same mark
+    
+    // iterate through winning conditions (arrays) to check if any of those are filled with the same mark
     winningConditions.forEach(condition => {
-        if(data.board[condition[0]] === data.board[condition[1]] && data.board[condition[1]] === data.board[condition[2]]) {
-            console.log('player has won')
+        if(
+            data.board[condition[0]] === data.board[condition[1]] && data.board[condition[1]] === data.board[condition[2]]
+        ) {
+            console.log('player has won');
+            data.gameOver = true;
             result = true;
         }
-    })
+    });
     return result;
-}
+};
 
-// TODO IN-PROGRESS/REWORK
-    // * USE 'result' variable from checkWinner
-    // * arrow function
-    // * REPLACE with endConditions and rename to gameOver?
-function gameOver(e, data, winner) {
-    if (winner === 'p1') {
-        document.querySelector('[data-winning-message]').textContent = `${data.p1} WINS!`;
-        showModal('restartModal');
-    } else if (winner === 'p2') {
-        document.querySelector('[data-winning-message]').textContent = `${data.p2} WINS!`;
-        showModal('restartModal');
-    } else if (winner === 'draw') {
-        document.querySelector('[data-winning-message]').textContent = 'DRAW!';
-        showModal('restartModal');
-    }
-}
+
+
+
+
+
 
 // Swith player between x/o
 const switchPlayer = (data) => {
     if (data.round > 0) {
-        // let currentPlayer = data.currentPlayer;
         
         if (data.currentPlayer === 'X') {
             data.currentPlayer = 'O';
@@ -201,17 +201,6 @@ const switchPlayer = (data) => {
         }
     }
 }
-
-// Reset the board and start from the beginning with the same players
-// function resetBoard(data) {
-//     initializaVariables(data);
- 
-//     const cells = document.querySelectorAll('[data-cell]');
-//     cells.forEach(cell => cell.textContent = '');
-
-//     document.querySelector('[data-winning-message]').textContent = '';
-
-// }
 
 // Reset the board and start from the beginning with the same players
 const resetBoard = (data) => {

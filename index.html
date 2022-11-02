@@ -27,19 +27,19 @@
     <div class="modal" id="modal">
         <form class="my-form" id="myForm" method="get"> 
             <label for="name">Player 1's name:</label>
-            <input type="text" id="p1-name" name="p1">
+            <input aria-label="name" type="text" id="p1-name" name="p1">
             <label for="name">Player 2's name:</label>
-            <input type="text" id="p2-name" name="p2">
+            <input aria-label="name" type="text" id="p2-name" name="p2">
             
             <br><br>
 
-            <input type="radio" id="human" name="opponent" value="human">
+            <input aria-label="opponent" type="radio" id="human" name="opponent" value="human">
             <label for="easy">Human vs. Human</label> <br>
             
-            <input type="radio" id="easyAI" name="opponent" value="easyAI">
+            <input aria-label="opponent" type="radio" id="easyAI" name="opponent" value="easyAI">
             <label for="easy">Human vs. Easy AI</label> <br>
         
-            <input type="radio" id="hardAI" name="opponent" value="hardAI">
+            <input aria-label="opponent" type="radio" id="hardAI" name="opponent" value="hardAI">
             <label for="hard">Human vs. Hard AI</label> <br>
 
             <button type="submit" class="form-submit-btn" id="formSubmitBtn">Play</button>
