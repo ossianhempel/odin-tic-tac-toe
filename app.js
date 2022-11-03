@@ -1,10 +1,7 @@
 const form = document.querySelector('#myForm');
 const modal = document.querySelector('#modal');
-const restartModal = document.querySelector('#restartModal');
-restartModal.style.display = 'none';
-const restartButton = document.querySelector('#restartButton');
-const backToMenuButton = document.querySelector('#backToMenuButton');
-
+const resetButton = document.querySelector('#resetButton');
+const settingsButton = document.querySelector('#settingsButton');
 const board = document.querySelector('#board');
 
 
@@ -46,7 +43,6 @@ const initializaVariables = (data) => {
 }
 
 
-// TODO turn into module?
 const addEventListenersToBoard = (data) => {
     const gridCells = document.querySelectorAll('[data-cell]');
     gridCells.forEach(cell => {
@@ -57,20 +53,24 @@ const addEventListenersToBoard = (data) => {
 }
 
 // TODO add eventlisteners to the buttons
-    // * turn into module?
 const addEventListenersToButtons = (data) => {
     const dataObject = data;
     
-    restartButton.addEventListener('click', () => {
+    resetButton.addEventListener('click', () => {
         resetBoard(dataObject);
         showModal('restartModal');
+        
     })
 
     // TODO fix this one!!! similar to the one above 
         // * Rework?
-    backToMenuButton.addEventListener('click', () => {
+    settingsButton.addEventListener('click', () => {
         resetBoard(dataObject);
+        
+        // hide restartModal
         showModal('restartModal');
+
+        // show main menu
         showModal('modal');
     
     });
@@ -90,7 +90,32 @@ const InitializeGame = (data) => {
 
 
 // TODO REWORK show/hide modal based on which modal is passed as an argument 
+
+// const showModal = (data) => {
+
+//     addEventListenersToButtons(data);
+
+
+//     if (data.gameOver === true) {
+//         if (restartModal.style.display === 'none') {
+//             restartModal.style.display = 'block';
+//         } else {
+//             restartModal.style.display = 'none';
+//         }
+//     } else {
+//         if (modal.style.display === 'none') {
+//             modal.style.display = 'block';
+//         } else {
+//             modal.style.display = 'none';
+//         }
+//     }
+
+
+// }
+
+
 function showModal(whichModal) {
+
     if (whichModal === 'modal') {
         if (modal.style.display === 'none') {
             modal.style.display = 'block';
@@ -106,9 +131,7 @@ function showModal(whichModal) {
     }
 };
 
-// const showModal = (data) => {
 
-// }
 
 
 // // What happens when player clicks on the board
@@ -144,21 +167,17 @@ const addMark = (e, data) => {
 
 
 const endConditions = (data) => {
-    
 
     if (checkWinner(data)) {
         
-        // TODO adjust the dom to reflect win
-        document.querySelector('[data-winning-message]').textContent = `${data.p1} WINS!`;
-        // showModal('restartModal');
-        
+        document.querySelector('[data-game-message]').textContent = `${data.p1} WINS!`;
+        showModal('restartModal');
         return true; 
 
     } else if (data.round === 9) {
-        // TODO adjust the dom to reflect tie 
-        document.querySelector('[data-winning-message]').textContent = 'DRAW!';
-        // showModal('restartModal');
-
+        
+        document.querySelector('[data-game-message]').textContent = 'DRAW!';
+        showModal('restartModal');
         return true;
     }
     return false;
@@ -180,8 +199,6 @@ const checkWinner = (data) => {
     });
     return result;
 };
-
-
 
 
 
@@ -209,7 +226,7 @@ const resetBoard = (data) => {
     const cells = document.querySelectorAll('[data-cell]');
     cells.forEach(cell => cell.textContent = '');
 
-    document.querySelector('[data-winning-message]').textContent = '';
+    document.querySelector('[data-game-message]').textContent = '';
 
 }
 
