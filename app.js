@@ -54,24 +54,20 @@ const addEventListenersToBoard = (data) => {
 
 // TODO add eventlisteners to the buttons
 const addEventListenersToButtons = (data) => {
-    const dataObject = data;
+    // const dataObject = data;
     
     resetButton.addEventListener('click', () => {
-        resetBoard(dataObject);
-        showModal('restartModal');
+        resetBoard(data);
         
     })
 
     // TODO fix this one!!! similar to the one above 
         // * Rework?
     settingsButton.addEventListener('click', () => {
-        resetBoard(dataObject);
-        
-        // hide restartModal
-        showModal('restartModal');
+        resetBoard(data);
 
         // show main menu
-        showModal('modal');
+        showModal();
     
     });
 }
@@ -89,52 +85,18 @@ const InitializeGame = (data) => {
 
 
 
-// TODO REWORK show/hide modal based on which modal is passed as an argument 
-
-// const showModal = (data) => {
-
-//     addEventListenersToButtons(data);
-
-
-//     if (data.gameOver === true) {
-//         if (restartModal.style.display === 'none') {
-//             restartModal.style.display = 'block';
-//         } else {
-//             restartModal.style.display = 'none';
-//         }
-//     } else {
-//         if (modal.style.display === 'none') {
-//             modal.style.display = 'block';
-//         } else {
-//             modal.style.display = 'none';
-//         }
-//     }
-
-
-// }
-
-
-function showModal(whichModal) {
-
-    if (whichModal === 'modal') {
-        if (modal.style.display === 'none') {
-            modal.style.display = 'block';
-        } else {
-            modal.style.display = 'none';
-        }
-    } else if (whichModal === 'restartModal') {
-        if (restartModal.style.display === 'none') {
-            restartModal.style.display = 'block';
-        } else {
-            restartModal.style.display = 'none';
-        }
+// Show or hide modal
+const showModal = () => {
+    if (modal.style.display === 'none') {
+        modal.style.display = 'block';
+    } else {
+        modal.style.display = 'none';
     }
-};
+}
 
 
 
-
-// // What happens when player clicks on the board
+// What happens when player clicks on the board
 const handleClick = (e, data) => {
     
     // If it's game over, do nothing
@@ -147,15 +109,17 @@ const handleClick = (e, data) => {
         return;
     }
     
-
     addMark(e, data);
     nextRound(data);
-    switchPlayer(data);
     console.log(data);
 
     if (endConditions(data)) {
         // 
+        return;
     }
+    
+    switchPlayer(data);
+
 };
 
 // Place user's mark on the board and replace the cell's index in the board array with x/o
@@ -170,14 +134,12 @@ const endConditions = (data) => {
 
     if (checkWinner(data)) {
         
-        document.querySelector('[data-game-message]').textContent = `${data.p1} WINS!`;
-        showModal('restartModal');
+        document.querySelector('[data-game-message]').textContent = `${data.currentPlayer} WINS!`;
         return true; 
 
     } else if (data.round === 9) {
         
         document.querySelector('[data-game-message]').textContent = 'DRAW!';
-        showModal('restartModal');
         return true;
     }
     return false;
@@ -211,11 +173,13 @@ const switchPlayer = (data) => {
         if (data.currentPlayer === 'X') {
             data.currentPlayer = 'O';
             board.setAttribute('class', 'board O')
+            
 
         } else {
             data.currentPlayer = 'X';
             board.setAttribute('class', 'board X');
         }
+        document.querySelector('[data-game-message]').textContent = `${data.currentPlayer}'s turn`;
     }
 }
 
