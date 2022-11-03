@@ -40,6 +40,8 @@ const initializaVariables = (data) => {
     data.round = 0;
     data.currentPlayer = 'X';
     data.gameOver = false;
+    document.querySelector('[data-game-message]').textContent = `${data.p1Name} (X)'s turn`;
+
 }
 
 
@@ -54,7 +56,6 @@ const addEventListenersToBoard = (data) => {
 
 // TODO add eventlisteners to the buttons
 const addEventListenersToButtons = (data) => {
-    // const dataObject = data;
     
     resetButton.addEventListener('click', () => {
         resetBoard(data);
@@ -63,8 +64,6 @@ const addEventListenersToButtons = (data) => {
         
     })
 
-    // TODO fix this one!!! similar to the one above 
-        // * Rework?
     settingsButton.addEventListener('click', () => {
         resetBoard(data);
         initializaVariables(data);
@@ -136,7 +135,11 @@ const endConditions = (data) => {
 
     if (checkWinner(data)) {
         
-        document.querySelector('[data-game-message]').textContent = `${data.currentPlayer} WINS!`;
+        data.currentPlayer === 'X' ? 
+        document.querySelector('[data-game-message]').textContent = `${data.p1Name} WINS!` :
+        document.querySelector('[data-game-message]').textContent = `${data.p2Name} WINS!`;
+
+        // document.querySelector('[data-game-message]').textContent = `${data.currentPlayer} WINS!`;
         return true; 
 
     } else if (data.round === 9) {
@@ -175,25 +178,27 @@ const switchPlayer = (data) => {
         if (data.currentPlayer === 'X') {
             data.currentPlayer = 'O';
             board.setAttribute('class', 'board O')
+            document.querySelector('[data-game-message]').textContent = `${data.p2Name} (O)'s turn`;
+
             
 
         } else {
             data.currentPlayer = 'X';
             board.setAttribute('class', 'board X');
+            document.querySelector('[data-game-message]').textContent = `${data.p1Name} (X)'s turn`;
+
         }
-        document.querySelector('[data-game-message]').textContent = `${data.currentPlayer}'s turn`;
+        // document.querySelector('[data-game-message]').textContent = `${data.currentPlayer}'s turn`;
     }
 }
 
 // Reset the board and start from the beginning with the same players
 const resetBoard = (data) => {
-    // initializaVariables(data);
 
     const cells = document.querySelectorAll('[data-cell]');
     cells.forEach(cell => cell.textContent = '');
 
-    document.querySelector('[data-game-message]').textContent = `${data.p1}'s turn`;
-
+    document.querySelector('[data-game-message]').textContent = `${data.p1Name} (X)'s turn`;
 }
 
 // Iterate data.round
@@ -211,3 +216,10 @@ const nextRound = (data) => {
 
 
 // TODO change so that Xs and Os are nice looking - like webdevesimplified did it
+
+
+// TODO refactor recurring "if (currentPlayer = X........)" statements to a function?
+
+
+// TODO could this be rewritten so that each player is a separate object instead? Would require less if-statements in many places
+// if (currentPlayer = X........)

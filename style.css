@@ -73,24 +73,11 @@ body {
     display: block;
     position: fixed;
     z-index: 1;
-    top: 70vh;
-    left: 50vh;
+    top: 40%;
+    left: 35%;
     height: 400px;
     width: 300px;
-    opacity: 90%;
-    background-color: black;
-    border: 2px solid red;
-}
-
-.restart-modal {
-    /* display: none; */
-    position: fixed;
-    z-index: 1;
-    top: 70vh;
-    left: 20vh;
-    height: 400px;
-    width: 300px;
-    opacity: 90%;
+    /* opacity: 90%; */
     background-color: black;
     border: 2px solid red;
 }
