@@ -58,6 +58,8 @@ const addEventListenersToButtons = (data) => {
     
     resetButton.addEventListener('click', () => {
         resetBoard(data);
+        initializaVariables(data);
+
         
     })
 
@@ -65,10 +67,10 @@ const addEventListenersToButtons = (data) => {
         // * Rework?
     settingsButton.addEventListener('click', () => {
         resetBoard(data);
-
-        // show main menu
+        initializaVariables(data);
+        addEventListenersToButtons(data);
         showModal();
-    
+
     });
 }
 
@@ -185,12 +187,12 @@ const switchPlayer = (data) => {
 
 // Reset the board and start from the beginning with the same players
 const resetBoard = (data) => {
-    initializaVariables(data);
+    // initializaVariables(data);
 
     const cells = document.querySelectorAll('[data-cell]');
     cells.forEach(cell => cell.textContent = '');
 
-    document.querySelector('[data-game-message]').textContent = '';
+    document.querySelector('[data-game-message]').textContent = `${data.p1}'s turn`;
 
 }
 
