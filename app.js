@@ -34,6 +34,7 @@ form.addEventListener('submit', (e) => {
 
 // initialize the object variables
 const initializaVariables = (data) => {
+    data.choice = +data.choice;
     data.board = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     data.p1 = 'X'
     data.p2 = 'O'
@@ -119,7 +120,18 @@ const handleClick = (e, data) => {
         return;
     }
     
-    switchPlayer(data);
+    if (data.opponent === 'human') {
+        switchPlayer(data);
+    } else if (data.opponent === 'easyAI') {
+        // easy AI
+        easyAIMove(data);
+        // change back to player
+        data.currentPlayer = 'X';
+    } else {
+        // hard AI
+        // change back to player
+
+    }
 
 };
 
@@ -159,7 +171,6 @@ const checkWinner = (data) => {
         if(
             data.board[condition[0]] === data.board[condition[1]] && data.board[condition[1]] === data.board[condition[2]]
         ) {
-            console.log('player has won');
             data.gameOver = true;
             result = true;
         }
@@ -179,8 +190,6 @@ const switchPlayer = (data) => {
             data.currentPlayer = 'O';
             board.setAttribute('class', 'board O')
             document.querySelector('[data-game-message]').textContent = `${data.p2Name} (O)'s turn`;
-
-            
 
         } else {
             data.currentPlayer = 'X';
@@ -212,8 +221,33 @@ const nextRound = (data) => {
 
 
 // TODO Add AI using MinMax-algorithm
+    // * Can't use settings
 
+const easyAIMove = (data) => {
+    switchPlayer(data);
+    nextRound(data);
 
+    let availableCells = data.board.filter(
+        cell => cell !== 'X' && cell !=='O'
+        );
+
+    if (availableCells.length > 0) {
+        let move = availableCells[Math.floor(Math.random() * availableCells.length)]
+        data.board[move] = data.p2;
+        // add delay before AI's move is played
+        setTimeout(() => {
+            let cell = document.getElementById(`${move}`);
+            cell.textContent = data.p2;
+            cell.classList.add("O");
+        }, 200);
+    }
+
+    
+    if (endConditions(data)) {
+        return;
+    }
+    
+};
 
 // TODO change so that Xs and Os are nice looking - like webdevesimplified did it
 
