@@ -127,10 +127,11 @@ const handleClick = (e, data) => {
         easyAIMove(data);
         // change back to player
         data.currentPlayer = 'X';
-    } else {
+    } else if (data.opponent === 'hardAI') {
         // hard AI
+        hardAIMove(data);
         // change back to player
-
+        data.currentPlayer = 'X';
     }
 
 };
@@ -145,41 +146,41 @@ const addMark = (e, data) => {
 
 const endConditions = (data) => {
 
-    if (checkWinner(data)) {
-        
+    if (checkWinner(data, data.currentPlayer)) {
+        // adjust DOM to reflect win
         data.currentPlayer === 'X' ? 
         document.querySelector('[data-game-message]').textContent = `${data.p1Name} WINS!` :
         document.querySelector('[data-game-message]').textContent = `${data.p2Name} WINS!`;
+        data.gameOver = true;
 
-        // document.querySelector('[data-game-message]').textContent = `${data.currentPlayer} WINS!`;
         return true; 
 
     } else if (data.round === 9) {
         
         document.querySelector('[data-game-message]').textContent = 'DRAW!';
+        data.gameOver = true;
         return true;
     }
     return false;
 }
 
 // Check if someone's won or if draw - returns true or false through variable 'result'
-const checkWinner = (data) => {
+const checkWinner = (data, player) => {
     let result = false;
     
     // iterate through winning conditions (arrays) to check if any of those are filled with the same mark
     winningConditions.forEach(condition => {
         if(
-            data.board[condition[0]] === data.board[condition[1]] && data.board[condition[1]] === data.board[condition[2]]
+            data.board[condition[0]] === player && 
+            data.board[condition[1]] === player && 
+            data.board[condition[2]] === player
         ) {
-            data.gameOver = true;
+            // data.gameOver = true;
             result = true;
         }
     });
     return result;
 };
-
-
-
 
 
 // Swith player between x/o
@@ -216,10 +217,6 @@ const nextRound = (data) => {
 }
 
 
-
-
-
-
 // TODO Add AI using MinMax-algorithm
     // * Can't use settings
 
@@ -246,8 +243,90 @@ const easyAIMove = (data) => {
     if (endConditions(data)) {
         return;
     }
-    
 };
+
+const hardAIMove = (data) => {
+    switchPlayer(data);
+    nextRound(data);
+
+    const move = minimax(data, 'O').index;
+    data.board[move] = data.p2
+
+
+    setTimeout(() => {
+        let cell = document.getElementById(`${move}`);
+        cell.textContent = data.p2;
+        cell.classList.add("O");
+    }, 200);
+
+    if (endConditions(data)) {
+        return;
+    }
+    
+}
+
+
+const minimax = (data, player) => {
+    let availableCells = data.board.filter(
+        cell => cell !== 'X' && cell !=='O'
+        );
+    if(checkWinner(data, data.p1)) {
+        return {
+            score: -100
+        }
+    } else if (checkWinner(data, data.p2)) {
+        return {
+            score: 100
+        }
+    } else if (availableCells.length === 0) {
+        return {
+            score: 0
+        }
+    }
+    
+    // Need to check all possible outcomes recursively to choose next move
+        // check if winner, if p1 wins set score to -100
+        // if tie, set score to 0
+        // if win set score to 100
+    // loop over available moves to get list of all potential moves and check if wins
+    const potentialMoves = []
+    for(let i = 0; i < availableCells.length; i++) {
+        let move = {};
+        move.index = data.board[availableCells[i]];
+        data.board[availableCells[i]] = player;
+        if(player === data.p2) {
+            move.score = minimax(data, data.p1).score;
+        } else {
+            move.score = minimax(data, data.p2).score;
+        }
+        // reset the move on the board
+        data.board[availableCells[i]] = move.index;
+        // push the potential move to the array
+        potentialMoves.push(move)
+    }
+    let bestMove = 0;
+    if(player === data.p2) {
+        let bestScore = -10000;
+        for(let i = 0; i < potentialMoves.length; i++) {
+            if(potentialMoves[i].score > bestScore) {
+                bestScore = potentialMoves[i].score;
+                bestMove = i;
+            }
+        }
+    } else {
+        let bestScore = 10000;
+        for(let i = 0; i < potentialMoves.length; i++) {
+            if(potentialMoves[i].score < bestScore) {
+                bestScore = potentialMoves[i].score;
+                bestMove = i;
+            }
+        }
+    }
+    // data.gameOver = false;
+    return potentialMoves[bestMove];
+}
+
+
 
 // TODO change so that Xs and Os are nice looking - like webdevesimplified did it
 
@@ -257,3 +336,5 @@ const easyAIMove = (data) => {
 
 // TODO could this be rewritten so that each player is a separate object instead? Would require less if-statements in many places
 // if (currentPlayer = X........)
+
+// TODO add alpha-beta pruning?
